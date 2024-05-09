@@ -21,10 +21,10 @@ popd
 
 ####
 if [ ! -d "Xray-core" ]; then
-  git clone --no-checkout https://github.com/MatsuriDayo/Xray-core.git
+  git clone -b neko-xray https://github.com/freegeekman/nekoray-xray-core Xray-core
 fi
-pushd Xray-core
-git checkout "$COMMIT_MATSURI_XRAY"
-popd
+#pushd Xray-core
+#git checkout "$COMMIT_MATSURI_XRAY"
+#popd
 
 popd
