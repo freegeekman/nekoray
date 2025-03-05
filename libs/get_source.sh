@@ -12,8 +12,8 @@ fi
 cd sing-box-extra
 git checkout "$COMMIT_SING_BOX_EXTRA"
 
-source $SRC_ROOT/sing-box-extra/libs/get_source_env.sh
-NO_ENV=1 $SRC_ROOT/sing-box-extra/libs/get_source.sh
+source $SRC_ROOT/../sing-box-extra/libs/get_source_env.sh
+NO_ENV=1 $SRC_ROOT/../sing-box-extra/libs/get_source.sh
 
 cd $SRC_ROOT; cd ..
 
