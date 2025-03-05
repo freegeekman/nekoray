@@ -7,7 +7,7 @@ source libs/get_source_env.sh
 cd $SRC_ROOT; cd ..
 ####
 if [ ! -d "sing-box-extra" ]; then
-  git clone --no-checkout https://github.com/MatsuriDayo/sing-box-extra.git
+  git clone https://github.com/MatsuriDayo/sing-box-extra.git
 fi
 cd sing-box-extra
 git checkout "$COMMIT_SING_BOX_EXTRA"
