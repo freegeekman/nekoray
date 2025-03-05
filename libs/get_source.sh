@@ -4,27 +4,25 @@ set -e
 source libs/env_deploy.sh
 ENV_NEKORAY=1
 source libs/get_source_env.sh
-pushd ..
-
+cd $SRC_ROOT; cd ..
 ####
 if [ ! -d "sing-box-extra" ]; then
   git clone --no-checkout https://github.com/MatsuriDayo/sing-box-extra.git
 fi
-pushd sing-box-extra
+cd sing-box-extra
 git checkout "$COMMIT_SING_BOX_EXTRA"
 
-ENV_SING_BOX_EXTRA=1
-source $SRC_ROOT/libs/get_source_env.sh
-NO_ENV=1 ./libs/get_source.sh
+source $SRC_ROOT/sing-box-extra/libs/get_source_env.sh
+NO_ENV=1 $SRC_ROOT/sing-box-extra/libs/get_source.sh
 
-popd
+cd $SRC_ROOT; cd ..
 
 ####
 if [ ! -d "Xray-core" ]; then
-  git clone --no-checkout https://github.com/MatsuriDayo/Xray-core.git
+  git clone -b neko-xray https://github.com/freegeekman/nekoray-xray-core Xray-core
 fi
 # pushd Xray-core
 # git checkout "$COMMIT_MATSURI_XRAY"
 # popd
 
-popd
+cd $SRC_ROOT
