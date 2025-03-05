@@ -25,18 +25,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checking out sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Go Status
         run: git ls-files go | xargs cat | sha1sum > go_status
       - name: Cache Common Download
         id: cache-common
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: artifacts.tgz
           key: CommonCache-${{ matrix.cross_os }}-${{ matrix.cross_arch }}-${{ hashFiles('libs/*.sh', 'go_status', '*.txt') }}
       - name: Install Golang
         if: steps.cache-common.outputs.cache-hit != 'true'
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version: ^1.23
       - name: Build golang parts
@@ -51,7 +51,7 @@ jobs:
         if: steps.cache-common.outputs.cache-hit != 'true'
         run: tar czvf artifacts.tgz ./deployment
       - name: Uploading Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: NekoRay-${{ github.sha }}-Common-${{ matrix.cross_os }}-${{ matrix.cross_arch }}
           path: artifacts.tgz
@@ -62,7 +62,7 @@ jobs:
           - platform: windows-2022
             arch: x64
             qt_version: "6.5"
-          - platform: ubuntu-20.04
+          - platform: ubuntu-22.04
             arch: x64
             qt_version: "5.12"
       fail-fast: false
@@ -72,7 +72,7 @@ jobs:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     steps:
       - name: Checking out sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: "recursive"
       - name: Install MSVC compiler
@@ -94,17 +94,17 @@ jobs:
         uses: seanmiddleditch/gha-setup-ninja@v3
       - name: Cache Download
         id: cache-deps
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: libs/deps
           key: DepsCache-${{ matrix.platform }}-${{ matrix.arch }}-${{ hashFiles('libs/build_deps_*.sh') }}-Qt${{ matrix.qt_version }}
       - name: Build Dependencies
         shell: bash
-        if: steps.cache-deps.outputs.cache-hit != 'true' && matrix.platform != 'ubuntu-20.04'
+        if: steps.cache-deps.outputs.cache-hit != 'true' && matrix.platform != 'ubuntu-22.04'
         run: ./libs/build_deps_all.sh
       - name: Build Dependencies (Docker)
         shell: bash
-        if: steps.cache-deps.outputs.cache-hit != 'true' && matrix.platform == 'ubuntu-20.04'
+        if: steps.cache-deps.outputs.cache-hit != 'true' && matrix.platform == 'ubuntu-22.04'
         run: |
           docker run --rm \
             -v $PWD:/nekoray \
@@ -129,7 +129,7 @@ jobs:
           ./libs/deploy_windows64.sh
       - name: Linux - Generate MakeFile and Build
         shell: bash
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.platform == 'ubuntu-22.04'
         run: |
           docker run --rm \
             -v $PWD:/nekoray \
@@ -141,7 +141,7 @@ jobs:
         shell: bash
         run: tar czvf artifacts.tgz ./deployment
       - name: Uploading Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: NekoRay-${{ github.sha }}-${{ matrix.platform }}-${{ matrix.arch }}-Qt${{ matrix.qt_version }}
           path: artifacts.tgz
@@ -154,9 +154,9 @@ jobs:
       - build-go
     steps:
       - name: Checking out sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Download Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: download-artifact
       - name: Pack
